@@ -8,16 +8,48 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
+          extensions: dom, iconv, json, libxml, zip
           tools: composer
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Configure Composer cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         run: composer install
 
-      - name: Test
-        run: echo 'Hello World'
+      - name: Configure git user
+        run: |
+          git config --global user.email "alain.schlesser@gmail.com"
+          git config --global user.name "Alain Schlesser"
+
+      - name: Check if remote branch exists
+        id: remote-branch
+        run: echo ::set-output name=exists::$([[ -z $(git ls-remote --heads origin sync-local-fallback-files) ]] && echo "0" || echo "1")
+
+      - name: Create branch to base pull request on
+        if: steps.remote-branch.outputs.exists == 0
+        run: |
+          git checkout -b sync-local-fallback-files
+
+      - name: Fetch existing branch to add commits to
+        if: steps.remote-branch.outputs.exists == 1
+        run: |
+          git fetch --all --prune
+          git checkout sync-local-fallback-files
+          git pull --no-rebase
