@@ -15,11 +15,11 @@ jobs:
     #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v2
-      #   with:
-      #     ref: main
-      #     fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: main
+          fetch-depth: 0
 
       # - name: Setup PHP
       #   uses: shivammathur/setup-php@v2
