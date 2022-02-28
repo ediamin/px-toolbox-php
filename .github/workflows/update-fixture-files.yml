@@ -95,6 +95,7 @@ jobs:
       #     DB_HOST: 127.0.0.1:${{ job.services.mysql.ports['3306'] }}
       #   run: composer server:start
       - name: Check env variables
-        PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
+        env:
+          PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
         run: |
           bash bin/server-start
