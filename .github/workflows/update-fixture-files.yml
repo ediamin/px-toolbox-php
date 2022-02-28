@@ -96,6 +96,6 @@ jobs:
       #   run: composer server:start
       - name: Check env variables
         env:
-          PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
+          PSI_API_KEY: "${{ secrets.PSI_API_KEY }}"
         run: |
           bash bin/server-start
