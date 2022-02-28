@@ -4,6 +4,17 @@ on: [push, pull_request]
 jobs:
   update-fixture-files:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mariadb:latest
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_ROOT_PASSWORD:
+          MYSQL_DATABASE: px_toolbox_php
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -15,8 +26,17 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          extensions: dom, iconv, json, libxml, zip
+          extensions: curl, date, dom, gd, iconv, json, libxml, mysql, spl
           tools: composer
+
+      - name: Shutdown default MySQL service
+        run: sudo service mysql stop
+
+      - name: Verify MariaDB connection
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" -P"${{ job.services.mysql.ports[3306] }}" --silent; do
+            sleep 1
+          done
 
       - name: Get Composer Cache Directory
         id: composer-cache
