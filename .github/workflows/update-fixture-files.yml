@@ -10,6 +10,7 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_ROOT_PASSWORD:
+          MARIADB_USER: ampproject
           MYSQL_DATABASE: px_toolbox_php
         ports:
           - 3306
@@ -86,3 +87,12 @@ jobs:
           chmod +x wp-cli.phar
           mv wp-cli.phar /usr/local/bin/wp
           wp --info
+
+      - name: Run the updater script
+        env:
+          PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
+          DB_NAME: px_toolbox_php
+          DB_USER: ampproject
+          DB_PASS:
+          DB_HOST: 127.0.0.1
+        run: composer sync-fixture
