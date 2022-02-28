@@ -95,4 +95,4 @@ jobs:
           DB_USER: ampproject
           DB_PASS:
           DB_HOST: 127.0.0.1
-        run: composer sync-fixture
+        run: composer server:start
