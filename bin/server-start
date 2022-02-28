@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo 'PSI_API_KEY'
+echo $PSI_API_KEY
+
+exit;
 # Load environment variables from .env file if exists.
 if [ ! -f ../.env ]; then
     export $(cat .env | xargs)
