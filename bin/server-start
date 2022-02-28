@@ -1,9 +1,5 @@
 #!/bin/bash
 
-echo 'PSI_API_KEY'
-echo $PSI_API_KEY
-
-exit;
 # Load environment variables from .env file if exists.
 if [ ! -f ../.env ]; then
     export $(cat .env | xargs)
@@ -70,3 +66,5 @@ PHP
 fi
 
 echo $publicUrl
+echo 'sleep 15'
+sleep 15
