@@ -10,7 +10,6 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_ROOT_PASSWORD:
-          MARIADB_USER: ampproject
           MYSQL_DATABASE: px_toolbox_php
         ports:
           - 3306
@@ -92,7 +91,7 @@ jobs:
         env:
           PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
           DB_NAME: px_toolbox_php
-          DB_USER: ampproject
-          DB_PASS:
-          DB_HOST: localhost
+          DB_USER: root
+          DB_PASS: ''
+          DB_HOST: 127.0.0.1:${{ job.services.mysql.ports['3306'] }}
         run: composer server:start
