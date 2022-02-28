@@ -57,5 +57,6 @@ jobs:
       - name: Download ngrok
         run: |
           curl https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.tgz --output ngrok-stable-linux-amd64.tgz
-          tar xvzf ngrok-stable-linux-amd64.tgz /usr/local/bin
+          tar xvzf ngrok-stable-linux-amd64.tgz
+          mv ngrok /usr/local/bin
           which ngrok
