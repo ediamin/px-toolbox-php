@@ -54,8 +54,8 @@ jobs:
 
       - name: Configure git user
         run: |
-          git config --global user.email "alain.schlesser@gmail.com"
-          git config --global user.name "Alain Schlesser"
+          git config --global user.email "to.ediamin@gmail.com"
+          git config --global user.name "Edi Amin"
 
       - name: Check if remote branch exists
         id: remote-branch
@@ -94,3 +94,38 @@ jobs:
           DB_PASS: ''
           DB_HOST: 127.0.0.1:${{ job.services.mysql.ports['3306'] }}
         run: composer run update-fixture
+
+      - name: Check if there are changes
+        id: changes
+        run: echo ::set-output name=changed::$([[ -z $(git status --porcelain) ]] && echo "0" || echo "1")
+
+      - name: Get pull request body text
+        if: steps.changes.outputs.changed == 1
+        id: body
+        run: |
+          BODY=$(bin/render-pr-body.bash)
+          echo $BODY
+          BODY="${BODY//$'\n'/'%0A'}"
+          BODY="${BODY//$'`'/'\`'}"
+          echo -e "::set-output name=text::$BODY"
+
+      - name: Commit changes
+        if: steps.changes.outputs.changed == 1
+        run: |
+          git add --all .
+          git commit -m "Update fixture files - $(date +'%Y-%m-%d')"
+          git push origin update-fixture-files
+
+      - name: Create pull request
+        if: |
+          steps.changes.outputs.changed == 1 &&
+          steps.remote-branch.outputs.exists == 0
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: update-fixture-files
+          destination_branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: Update fixture files
+          pr_body: ${{ steps.body.outputs.text }}
+          pr_reviewer: ediamin
+          pr_label: SSR

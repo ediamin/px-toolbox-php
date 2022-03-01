@@ -78,5 +78,3 @@ cd ../
 ./bin/px psi --json --key $PSI_API_KEY $publicUrl/amp-page/ > ./tests/fixtures/psi_local-wp_amp-page.json
 
 echo "Generated the fixture file psi_local-wp_amp-page.json in tests/fixtures directory."
-
-cat ./tests/fixtures/psi_local-wp_amp-page.json
