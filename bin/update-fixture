@@ -36,6 +36,8 @@ function getPublicUrl() {
     echo $(curl http://localhost:4040/api/tunnels -s | grep -oP '(?<="public_url":")https[^"]*')
 }
 
+curl http://localhost:4040/api/tunnels
+
 publicUrl=$(getPublicUrl)
 
 while [ -z "$publicUrl" ]; do
