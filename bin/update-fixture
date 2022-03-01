@@ -30,7 +30,8 @@ php -S localhost:8080 > /dev/null 2>&1 &
 
 # Launch ngrok to expose the localhost port to the internet.
 echo "Creating the public url..."
-ngrok http 8080 > /dev/null 2>&1 &
+ngrok http 8080
+# ngrok http 8080 > /dev/null 2>&1 &
 
 function getPublicUrl() {
     echo $(curl http://localhost:4040/api/tunnels -s | grep -oP '(?<="public_url":")https[^"]*')
