@@ -18,14 +18,18 @@ fi
 
 # Create a wordpress directory where we can build the WordPress setup.
 mkdir -p wordpress
+echo "WordPress directory is created."
 
 # Change the current directory to our wordpress directory.
 cd wordpress
+echo "Current directory is changed to wordpress."
 
 # Launch the web server
+echo "Launching the web server..."
 php -S localhost:8080 > /dev/null 2>&1 &
 
 # Launch ngrok to expose the localhost port to the internet.
+echo "Creating the public url..."
 ngrok http 8080 > /dev/null 2>&1 &
 
 function getPublicUrl() {
@@ -36,10 +40,12 @@ publicUrl=$(getPublicUrl)
 
 while [ -z "$publicUrl" ]; do
     sleep 1
+    echo "Waiting for the public url..."
     publicUrl=$(getPublicUrl)
 done
 
 # Create a WordPress site.
+echo "Creating the WordPress site..."
 FILE=wp-content
 if [ ! -d "$FILE" ]; then
     wp core download
