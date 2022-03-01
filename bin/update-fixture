@@ -66,8 +66,11 @@ fi
 
 echo "WordPress public URL: $publicUrl"
 
+# Go back to root directory.
+cd ../
+
 # Generate the fixture file for the amp-page.
-../bin/px psi --json --key $PSI_API_KEY $publicUrl/amp-page/ > ./tests/fixtures/psi_local-wp_amp-page.json
+./bin/px psi --json --key $PSI_API_KEY $publicUrl/amp-page/ > ./tests/fixtures/psi_local-wp_amp-page.json
 
 echo "Generated the fixture file psi_local-wp_amp-page.json in tests/fixtures directory."
 
