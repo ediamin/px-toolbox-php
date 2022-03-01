@@ -23,7 +23,6 @@ mkdir -p wordpress
 cd wordpress
 
 # Launch the web server
-# wp server > /dev/null 2>&1 & # Not working. Need to check again.
 php -S localhost:8080 > /dev/null 2>&1 &
 
 # Launch ngrok to expose the localhost port to the internet.
@@ -65,6 +64,11 @@ PHP
     wp post create ../bin/posts/amp-page.html --post_name=amp-page --post_title='AMP Page' --post_status=publish --post_author=1
 fi
 
-echo $publicUrl
-echo 'sleep 15'
-sleep 15
+echo "WordPress public URL: $publicUrl"
+
+# Generate the fixture file for the amp-page.
+../bin/px psi --json --key $PSI_API_KEY $publicUrl/amp-page/ > ./tests/fixtures/psi_local-wp_amp-page.json
+
+echo "Generated the fixture file psi_local-wp_amp-page.json in tests/fixtures directory."
+
+cat ./tests/fixtures/psi_local-wp_amp-page.json
