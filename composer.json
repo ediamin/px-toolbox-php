@@ -1,7 +1,7 @@
 {
   "name": "ampproject/px-toolbox",
   "type": "library",
-  "description": "Tooling and APIs to support page experience optimization on PHP servers.",
+  "description": "Tooling and APIs to support page experience optimization on PHP servers. Testing.",
   "license": "Apache-2.0",
   "require": {
     "php": "^5.6 || ^7.0 || ^8.0",
