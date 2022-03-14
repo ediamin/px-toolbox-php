@@ -20,4 +20,6 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+
+      - name: Check jq
         run: which jq
